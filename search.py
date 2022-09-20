@@ -75,6 +75,7 @@ def tinyMazeSearch(problem):
 
 def depthFirstSearch(problem):
     """
+    Q1.
     Search the deepest nodes in the search tree first.
 
     Your search algorithm needs to return a list of actions that reaches the
@@ -92,7 +93,7 @@ def depthFirstSearch(problem):
 
     # Define a stack to update the fringe
     update_fringe = util.Stack()
-    visited_nodes = set()
+    visited_nodes = []
    
     # Update the fringe with the start state
     update_fringe.push((start, [], 0))
@@ -103,7 +104,7 @@ def depthFirstSearch(problem):
         present_state, set_actions, costs = update_fringe.pop()
         if not present_state in visited_nodes:
             # Update the visited status of the present state
-            visited_nodes.add(present_state)
+            visited_nodes.append(present_state)
             # check if this state is the goal
             if problem.isGoalState(present_state):
                 # return the actions to be done to reach this state
@@ -118,12 +119,14 @@ def depthFirstSearch(problem):
     util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
-    """Search the shallowest nodes in the search tree first."""
+    """
+    Q2.
+    Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
     start = problem.getStartState()
     # Define a queue (FIFO)
     update_fringe = util.Queue()
-    visited_nodes = set()
+    visited_nodes = []
 
     # Update the fringe with the start state
     update_fringe.push((start, [], 0))
@@ -134,7 +137,7 @@ def breadthFirstSearch(problem):
         present_state, set_actions, costs = update_fringe.pop()
         if not present_state in visited_nodes:
             # Update the visited status of the present state
-            visited_nodes.add(present_state)
+            visited_nodes.append(present_state)
             # check if this state is the goal
             if problem.isGoalState(present_state):
                 # return the actions to be done to reach this state
@@ -150,12 +153,14 @@ def breadthFirstSearch(problem):
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
-    """Search the node of least total cost first."""
+    """
+    Q3.
+    Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
     start = problem.getStartState()
     # Define a queue (FIFO)
     update_fringe = util.PriorityQueue()
-    visited_nodes = set()
+    visited_nodes = []
 
     # Update the fringe with the start state
     update_fringe.push((start, [], 0), 0)
@@ -166,7 +171,7 @@ def uniformCostSearch(problem):
         present_state, set_actions, costs = update_fringe.pop()
         if not present_state in visited_nodes:
             # Update the visited status of the present state
-            visited_nodes.add(present_state)
+            visited_nodes.append(present_state)
             # check if this state is the goal
             if problem.isGoalState(present_state):
                 # return the actions to be done to reach this state
@@ -188,12 +193,14 @@ def nullHeuristic(state, problem=None):
     return 0
 
 def aStarSearch(problem, heuristic=nullHeuristic):
-    """Search the node that has the lowest combined cost and heuristic first."""
+    """
+    Q4.
+    Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
     start = problem.getStartState()
     # Define a queue (FIFO)
     update_fringe = util.PriorityQueue()
-    visited_nodes = set()
+    visited_nodes = []
 
     # Update the fringe with the start state
     update_fringe.push((start, [], 0), 0)
@@ -204,7 +211,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         present_state, set_actions, costs = update_fringe.pop()
         if not present_state in visited_nodes:
             # Update the visited status of the present state
-            visited_nodes.add(present_state)
+            visited_nodes.append(present_state)
             # check if this state is the goal
             if problem.isGoalState(present_state):
                 # return the actions to be done to reach this state

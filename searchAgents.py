@@ -268,6 +268,7 @@ def euclideanHeuristic(position, problem, info={}):
 
 class CornersProblem(search.SearchProblem):
     """
+    Q5.
     This search problem finds paths through all four corners of a layout.
 
     You must select a suitable state space and successor function
@@ -295,6 +296,9 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
+        # return starting position and
+        # corners liist
+        return(self.startingPosition, ([box_corner for box_corner in self.corners]))
         util.raiseNotDefined()
 
     def isGoalState(self, state):
@@ -302,6 +306,12 @@ class CornersProblem(search.SearchProblem):
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
+        # check if the goal state is reached
+        # if the length of the list is zero, then no other elements are remaining 
+        if len(state[1]) == 0:
+            return True
+        else:
+            return False
         util.raiseNotDefined()
 
     def getSuccessors(self, state):
@@ -325,6 +335,27 @@ class CornersProblem(search.SearchProblem):
             #   hitsWall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
+
+            # define x, y current position 
+            # from current state
+            x,y = state[0]
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            hitsWall = self.walls[nextx][nexty]
+            
+            # Get the new position
+            updated_successor_pos = (nextx, nexty)
+            if not hitsWall:
+                # get the remaining corners
+                corners_left = state[1][:]
+                
+                # if the remaining corners are in the 
+                # updated successor position
+                if updated_successor_pos in corners_left:
+                    corners_left.remove(updated_successor_pos)
+                #update the state with the new remaining corners
+                #action in the for loop and cost of 1
+                successors.append(((updated_successor_pos, corners_left), action, 1))
 
         self._expanded += 1 # DO NOT CHANGE
         return successors
@@ -360,7 +391,34 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    heuristic_fn = 0
+    corners_left = state[1][:]
+
+    # we will begin from the present position to the corners
+    # to calculate manhattan distance 
+    present_state = state[0]
+
+    # compute the manhattan distance from present_state to the corner
+    while corners_left:
+
+        track_distances = []
+
+        # For remaining corners
+        for corner in corners_left:
+            # track distances from present state to each corner
+            track_distances.append((util.manhattanDistance(present_state, corner), corner))
+
+        # Get the minimum distance from the list of tracked distances 
+        min_distance, corner = min(track_distances)
+        # Add the minimum distance to heuristic
+        heuristic_fn += min_distance
+
+        # At last, update and remove the corners which have been visited
+        present_state = corner
+        corners_left.remove(corner)
+
+    return heuristic_fn # Default to trivial solution
+    # return 0 # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
