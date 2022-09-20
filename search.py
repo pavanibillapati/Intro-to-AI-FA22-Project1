@@ -152,6 +152,32 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
+    start = problem.getStartState()
+    # Define a queue (FIFO)
+    update_fringe = util.PriorityQueue()
+    visited_nodes = set()
+
+    # Update the fringe with the start state
+    update_fringe.push((start, [], 0), 0)
+
+    # while the fringe is not empty, 
+    # keep checking if the state is the goal state 
+    while not update_fringe.isEmpty():
+        present_state, set_actions, costs = update_fringe.pop()
+        if not present_state in visited_nodes:
+            # Update the visited status of the present state
+            visited_nodes.add(present_state)
+            # check if this state is the goal
+            if problem.isGoalState(present_state):
+                # return the actions to be done to reach this state
+                return set_actions
+
+            # if a state has not been visited,
+            # push them into the stack
+            for c_state, action, total_cost in problem.getSuccessors(present_state):
+                # check if state not visited
+                if not c_state in visited_nodes:
+                    update_fringe.push((c_state, set_actions + [action], costs + total_cost), costs + total_cost)
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
@@ -164,6 +190,34 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
+    start = problem.getStartState()
+    # Define a queue (FIFO)
+    update_fringe = util.PriorityQueue()
+    visited_nodes = set()
+
+    # Update the fringe with the start state
+    update_fringe.push((start, [], 0), 0)
+
+    # while the fringe is not empty, 
+    # keep checking if the state is the goal state 
+    while not update_fringe.isEmpty():
+        present_state, set_actions, costs = update_fringe.pop()
+        if not present_state in visited_nodes:
+            # Update the visited status of the present state
+            visited_nodes.add(present_state)
+            # check if this state is the goal
+            if problem.isGoalState(present_state):
+                # return the actions to be done to reach this state
+                return set_actions
+
+            # if a state has not been visited,
+            # push them into the stack
+            for c_state, action, total_cost in problem.getSuccessors(present_state):
+                # check if state not visited
+                if not c_state in visited_nodes:
+                    # compute the cost + heuristic 
+                    cost_plus_heuristic = costs + total_cost + heuristic(c_state, problem)
+                    update_fringe.push((c_state, set_actions + [action], costs + total_cost), cost_plus_heuristic)
     util.raiseNotDefined()
 
 
