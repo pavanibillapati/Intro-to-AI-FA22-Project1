@@ -510,6 +510,30 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
+	foodLeft = foodGrid.asList()
+
+    #if no food present it should return non negative
+    #since we need to find the distance from current position to the food positions
+    #first check if there is any food i.e. if the length of the food list is 0
+    if len(foodLeft) == 0:
+        return 0
+
+    #now find the distance from position to the food pellet and find the
+    #farthest corner from the present state and calculate
+    # 1. manhattan distance
+    # 2. euclidean - didnt work
+    # 3. better?
+
+    distance = []
+
+    for food in foodLeft:
+        #append to the distance list the manhattan distance
+        distance.append(util.manhattanDistance(position, food))
+
+    #find the maximum distance food pellet and return it
+    maxDistance = max(distance)
+
+    return maxDistance # Default to trivial solution
     return 0
 
 class ClosestDotSearchAgent(SearchAgent):
