@@ -534,7 +534,7 @@ def foodHeuristic(state, problem):
     maxDistance = max(distance)
 
     return maxDistance # Default to trivial solution
-    return 0
+    
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
